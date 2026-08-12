@@ -9,11 +9,12 @@ delete the demo and write your own:
 - **`index.php`** — rendered on the server. No JavaScript involved.
 - **`index.html` + `scripts.js`** — rendered in the browser, fetching `api/tasks.php`.
 
-Both read the same SQLite database through **`config/db.php`**.
+Both read the same MySQL database through **`config/db.php`**.
 
 ## Run it
 
 ```bash
+# edit .env with your credentials first
 docker compose up --build
 ```
 
@@ -41,19 +42,39 @@ dependencies — edit a file, reload the page.
 | `api/tasks.php` | JSON API: `GET` lists tasks, `POST` adds one |
 | `config/db.php` | PDO connection + schema/seed helpers |
 | `styles.css` | Shared styling for both pages |
+| `.env` | Your MySQL credentials — edit this before running |
 
 ## Database
 
-A self-contained **SQLite** file — there is no database server to run or configure. The
-schema is created and seeded on container start by `docker-entrypoint.sh`.
+**MySQL**, hosted at `db.sitc.skillsit.eu:3306`. Each competitor has their own username,
+password and database. Edit **`.env`** at the project root:
 
-The file lives at `/var/www/data/app.db`, **outside the document root**, so it cannot be
-downloaded over HTTP. Override the location with the `DB_PATH` environment variable.
+| Variable | Value |
+|----------|-------|
+| `DB_HOST` | `db.sitc.skillsit.eu` |
+| `DB_PORT` | `3306` |
+| `DB_USER` | your username, e.g. `c42` |
+| `DB_PASS` | your password |
+| `DB_NAME` | your database, e.g. `c42_module-a` |
 
-To use MySQL instead, swap the DSN in `config/db.php` (the alternative is written in a
-comment there) and add `pdo_mysql` to the `docker-php-ext-install` line in the `Dockerfile`.
+`config/db.php` loads `.env` and opens the PDO connection. The schema is created and
+seeded on container start by `docker-entrypoint.sh`; if the server is unreachable, Apache
+still starts and the pages show the connection error.
+
+**`.env` is committed on purpose.** The competition runs offline and the CI pipelines
+deploy the bare image to Kubernetes/pulldeck without setting any environment variables, so
+the credentials have to travel with the code. Two consequences worth knowing:
+
+- The Dockerfile moves `.env` to `/var/www/.env`, **outside the document root**, and Apache
+  denies all dotfiles — so `http://your-host/.env` returns 403, not your password.
+- A real environment variable still overrides the file, so compose or a k8s manifest can
+  change any value without a rebuild.
+
+> The database name contains a **hyphen**, so it must be wrapped in backticks anywhere it
+> appears in raw SQL (`` USE `c42_module-a` ``). It does *not* need quoting in the DSN.
 
 ## Stack
 
-- PHP 8.3 (Apache, `pdo_sqlite`)
+- PHP 8.3 (Apache, `pdo_mysql`)
+- MySQL (remote, competition-provided)
 - No framework, no build step, no dependencies

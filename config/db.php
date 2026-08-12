@@ -1,14 +1,59 @@
 <?php
 /**
- * Database configuration.
+ * Database configuration — MySQL.
  *
- * A self-contained SQLite file — there is no database server to run or configure.
- * The file lives OUTSIDE the web root so it can never be downloaded over HTTP.
+ * Connection details live in `.env` at the project root. That file is committed on
+ * purpose: the competition runs offline, and the deployed image is started without any
+ * environment variables, so the values have to travel with the code.
  *
- * Swap the DSN below if your project needs MySQL instead:
- *   $dsn = 'mysql:host=localhost;dbname=app;charset=utf8mb4';
- *   $pdo = new PDO($dsn, 'user', 'password', $options);
+ *   DB_HOST  db.sitc.skillsit.eu     DB_USER  your username, e.g. c42
+ *   DB_PORT  3306                    DB_PASS  your password
+ *   DB_NAME  c42_module-a
+ *
+ * A real environment variable always wins over the file, so `docker compose` or a
+ * Kubernetes manifest can still override any value without editing `.env`.
+ *
+ * NOTE: the database name contains a hyphen, so it must be wrapped in backticks
+ * anywhere it appears in raw SQL — `USE `c42_module-a`` — but NOT in the DSN below.
  */
+
+/**
+ * Read `.env` into the environment. Existing variables are never overwritten, so an
+ * explicitly-set variable takes precedence. Safe to call repeatedly.
+ */
+function load_env(): void
+{
+    static $loaded = false;
+    if ($loaded) {
+        return;
+    }
+    $loaded = true;
+
+    // In the container the file sits outside the document root so it cannot be
+    // downloaded over HTTP; locally it sits next to this project's files.
+    foreach ([dirname(__DIR__) . '/.env', '/var/www/.env'] as $file) {
+        if (!is_readable($file)) {
+            continue;
+        }
+
+        foreach (file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line) {
+            $line = trim($line);
+            if ($line === '' || $line[0] === '#' || !str_contains($line, '=')) {
+                continue;
+            }
+
+            [$key, $value] = explode('=', $line, 2);
+            $key   = trim($key);
+            $value = trim(trim($value), "\"'");
+
+            if ($key !== '' && getenv($key) === false) {
+                putenv("$key=$value");
+            }
+        }
+
+        return;
+    }
+}
 
 function db(): PDO
 {
@@ -17,16 +62,25 @@ function db(): PDO
         return $pdo;
     }
 
-    $path = getenv('DB_PATH') ?: '/var/www/data/app.db';
+    load_env();
 
-    $dir = dirname($path);
-    if (!is_dir($dir)) {
-        mkdir($dir, 0775, true);
+    $host = getenv('DB_HOST') ?: 'db.sitc.skillsit.eu';
+    $port = getenv('DB_PORT') ?: '3306';
+    $name = getenv('DB_NAME') ?: '';
+    $user = getenv('DB_USER') ?: '';
+    $pass = getenv('DB_PASS') ?: '';
+
+    if ($name === '' || $user === '') {
+        throw new RuntimeException('DB_NAME and DB_USER are not set — check .env at the project root.');
     }
 
-    $pdo = new PDO('sqlite:' . $path, null, null, [
+    $dsn = sprintf('mysql:host=%s;port=%s;dbname=%s;charset=utf8mb4', $host, $port, $name);
+
+    $pdo = new PDO($dsn, $user, $pass, [
         PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+        PDO::ATTR_EMULATE_PREPARES   => false,
+        PDO::ATTR_TIMEOUT            => 5,
     ]);
 
     return $pdo;
@@ -39,10 +93,11 @@ function db_init(): void
 
     $pdo->exec(
         'CREATE TABLE IF NOT EXISTS tasks (
-            id    INTEGER PRIMARY KEY AUTOINCREMENT,
-            title TEXT    NOT NULL,
-            done  INTEGER NOT NULL DEFAULT 0
-        )'
+            id    INT UNSIGNED NOT NULL AUTO_INCREMENT,
+            title VARCHAR(255) NOT NULL,
+            done  TINYINT(1)   NOT NULL DEFAULT 0,
+            PRIMARY KEY (id)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci'
     );
 
     if ((int) $pdo->query('SELECT COUNT(*) FROM tasks')->fetchColumn() === 0) {

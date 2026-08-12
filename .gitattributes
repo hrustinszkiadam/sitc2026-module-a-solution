@@ -1,0 +1,4 @@
+# Shell scripts must keep LF endings. On a Windows clone autocrlf would rewrite them to
+# CRLF, and the container then fails to start with "bad interpreter: /usr/bin/env bash^M".
+*.sh text eol=lf
+docker-entrypoint.sh text eol=lf

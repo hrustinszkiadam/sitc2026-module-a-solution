@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 set -e
 
-# SQLite only — no database server. Create the schema and seed it before Apache starts,
-# so the very first request already has data.
-php -r 'require "/var/www/html/config/db.php"; db_init();' || true
-chown -R www-data:www-data /var/www/data
+# The MySQL server is remote, so it may be briefly unreachable. Try to create and seed
+# the schema before Apache starts; if it fails, start anyway — the pages report the
+# error themselves and the next request retries.
+php -r 'require "/var/www/html/config/db.php"; db_init();' || \
+    echo "entrypoint: db_init failed — starting Apache anyway" >&2
 
 exec apache2-foreground

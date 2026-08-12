@@ -3,6 +3,6 @@ services:
     build: .
     ports:
       - "80:80"
-    environment:
-      # SQLite file, outside the document root
-      DB_PATH: "/var/www/data/app.db"
+    # Credentials are baked into the image too, but reading .env here means editing it
+    # takes effect on `docker compose up` without rebuilding.
+    env_file: .env

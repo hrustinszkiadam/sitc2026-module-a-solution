@@ -32,7 +32,7 @@ function e(string $value): string
   <main class="card">
     <h1>Vanilla <span class="v">PHP</span></h1>
     <p>WSC2026 Web Technologies — no framework. This page is rendered by
-      <code>index.php</code>, reading SQLite through <code>config/db.php</code>.</p>
+      <code>index.php</code>, reading MySQL through <code>config/db.php</code>.</p>
 
     <?php if ($error !== null): ?>
       <p class="warn">⚠️ Database not available: <?= e($error) ?></p>
