@@ -1,0 +1,69 @@
+/* A1 — Floating Label. HTML and CSS only, no JavaScript. */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  background: #f4f6fa;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  width: 340px;
+}
+
+.field {
+  position: relative;
+}
+
+.field input {
+  width: 100%;
+  height: 58px;
+  padding: 22px 14px 6px;
+  font-size: 16px;
+  color: #1c2331;
+  background: #fff;
+  border: 1px solid #c3cad6;
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.field input:focus {
+  border-color: #3f6fe0;
+  box-shadow: 0 0 0 3px rgba(63, 111, 224, 0.16);
+}
+
+.field label {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+  color: #7c869a;
+  pointer-events: none;
+  transition: top 0.18s ease, transform 0.18s ease, font-size 0.18s ease, color 0.18s ease;
+}
+
+/* Float the label while the input is focused, and keep it floating as long as the
+   input has a value (the placeholder is only shown while the field is empty). */
+.field input:focus + label,
+.field input:not(:placeholder-shown) + label {
+  top: 9px;
+  transform: none;
+  font-size: 12px;
+  color: #3f6fe0;
+}
+
+.field input:not(:focus):not(:placeholder-shown) + label {
+  color: #7c869a;
+}
