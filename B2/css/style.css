@@ -1,0 +1,137 @@
+/* B2 — Turntable */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  color: #f2ece2;
+  background: radial-gradient(circle at 50% 20%, #2c3038, #14161a 70%);
+}
+
+.player {
+  text-align: center;
+  padding: 24px;
+}
+
+.player h1 {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin: 0 0 24px;
+  color: #d8cdb8;
+}
+
+/* --- the record player -------------------------------------------------- */
+
+.turntable {
+  position: relative;
+  width: 700px;
+  max-width: 92vw;
+  margin: 0 auto;
+  filter: drop-shadow(0 24px 40px rgba(0, 0, 0, 0.55));
+}
+
+.base {
+  display: block;
+  width: 100%;
+}
+
+.wheel {
+  position: absolute;
+  width: 53.6%;
+  left: 8.2%;
+  top: 15.6%;
+  cursor: pointer;
+}
+
+.tone-arm {
+  position: absolute;
+  width: 20%;
+  left: 63.3%;
+  top: 22.7%;
+  /* the pivot of the arm inside its own image */
+  transform-origin: 83.3% 11.5%;
+  transform: rotate(0deg);
+  /* used when the animation is removed, so the arm swings back to its rest position */
+  transition: transform 0.8s ease;
+}
+
+/* The record spins and the arm swings over it while a song is playing. */
+.wheel.animation {
+  animation: spin 1.8s linear infinite;
+}
+
+.tone-arm.animation {
+  animation: arm-play 30s linear forwards;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes arm-play {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  6% {
+    transform: rotate(38deg);   /* the needle drops onto the outer edge */
+  }
+
+  100% {
+    transform: rotate(52deg);   /* and slowly travels towards the label */
+  }
+}
+
+/* --- controls ----------------------------------------------------------- */
+
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 28px;
+}
+
+.controls button {
+  min-width: 64px;
+  padding: 10px 18px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #f2ece2;
+  background: #3a3f48;
+  border: 1px solid #565c68;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.controls button:hover {
+  background: #474d58;
+}
+
+.controls label {
+  margin-left: 10px;
+  font-size: 14px;
+  color: #b3aa9a;
+}
+
+.controls input[type="range"] {
+  width: 140px;
+  accent-color: #e0574a;
+}
+
+.hint {
+  margin-top: 18px;
+  font-size: 14px;
+  color: #8d8879;
+}
