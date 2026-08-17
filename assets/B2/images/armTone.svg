@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 520" width="360" height="520">
+  <!-- The pivot sits at (300, 60): rotate the element around that point to move
+       the head-shell over the record. -->
+  <g stroke-linecap="round">
+    <!-- counterweight -->
+    <rect x="292" y="16" width="54" height="40" rx="12" fill="#4c5058"/>
+    <!-- arm tube -->
+    <line x1="300" y1="60" x2="150" y2="392" stroke="#b9bec7" stroke-width="15"/>
+    <line x1="300" y1="60" x2="150" y2="392" stroke="#dfe3ea" stroke-width="5"/>
+    <!-- bend towards the head-shell -->
+    <line x1="150" y1="392" x2="118" y2="446" stroke="#b9bec7" stroke-width="15"/>
+    <line x1="150" y1="392" x2="118" y2="446" stroke="#dfe3ea" stroke-width="5"/>
+  </g>
+
+  <!-- head-shell + stylus -->
+  <g transform="rotate(30 112 452)">
+    <rect x="78" y="430" width="70" height="44" rx="8" fill="#2f333a"/>
+    <rect x="82" y="434" width="62" height="16" rx="6" fill="#585e68"/>
+    <polygon points="112,474 104,486 120,486" fill="#c9ced7"/>
+  </g>
+
+  <!-- pivot -->
+  <circle cx="300" cy="60" r="26" fill="#3a3e45"/>
+  <circle cx="300" cy="60" r="15" fill="#8d939d"/>
+  <circle cx="300" cy="60" r="6" fill="#e3e7ee"/>
+</svg>

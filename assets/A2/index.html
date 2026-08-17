@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>A2 — Progress Animation</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="progress">
+    <div class="progress__bar"></div>
+  </div>
+
+  <header class="hero">
+    <h1>The Long Read</h1>
+    <p>Scroll down — the bar at the top of the page follows you.</p>
+  </header>
+
+  <main class="article">
+    <section>
+      <h2>Chapter one</h2>
+      <p>A reading progress indicator is a thin bar pinned to the top edge of the window
+        that grows as the reader moves through the document. It is empty when the page is
+        at the very top and completely filled once the last line of the article reaches
+        the bottom of the viewport.</p>
+      <p>The indicator has to feel immediate. Any lag between the scroll gesture and the
+        bar makes the page feel heavy, so the animation must be driven by the scroll
+        position itself rather than by a timer.</p>
+    </section>
+
+    <section>
+      <h2>Chapter two</h2>
+      <p>Long form pages tend to hide their own length. A reader who has just arrived
+        cannot tell whether two more minutes or twenty more minutes of text are waiting
+        below the fold, and that uncertainty is enough to make some of them leave.</p>
+      <p>A progress bar answers the question without adding a single word to the page. It
+        is a small piece of furniture that sits above the content, out of the way, and
+        reports one number: how much is left.</p>
+      <p>Because it is furniture, it should be quiet. A few pixels of height, one accent
+        colour, no shadow, no label. The bar is read out of the corner of the eye.</p>
+    </section>
+
+    <section>
+      <h2>Chapter three</h2>
+      <p>The first implementations of this pattern listened for scroll events and wrote a
+        width into the style attribute on every frame. It works, but it means the browser
+        has to wake up JavaScript for a purely visual effect that never leaves the
+        compositor.</p>
+      <p>The bar has exactly two states worth describing: empty at the start of the
+        document and full at the end. Everything between the two is interpolation, which
+        is what a stylesheet is already good at.</p>
+      <p>Describing the two states and letting the browser fill in the middle keeps the
+        effect smooth even while the main thread is busy loading images further down the
+        page.</p>
+    </section>
+
+    <section>
+      <h2>Chapter four</h2>
+      <p>Take care with the extremes. At the very top the bar must be genuinely empty, not
+        a few pixels wide, and at the very bottom it must reach the full width of the
+        window rather than stopping just short of it.</p>
+      <p>Those two moments are the ones a reader notices, because they are the only ones
+        where the bar can be compared against something: the edge of the screen.</p>
+      <p>Everything else is forgiving. Nobody checks whether the bar is at 43% or 47% half
+        way down an article, but everybody sees a bar that never quite finishes.</p>
+    </section>
+
+    <section>
+      <h2>Chapter five</h2>
+      <p>Test the page at several window sizes. A document that scrolls for six screens on
+        a laptop may scroll for twenty on a phone, and the bar has to behave the same way
+        in both cases without being told the height of the document in advance.</p>
+      <p>Test it after the page has been reloaded half way down as well. Browsers restore
+        the previous scroll position, and the bar has to appear in the right place
+        immediately rather than jumping from zero.</p>
+    </section>
+
+    <section>
+      <h2>Chapter six</h2>
+      <p>The last section of an article is where the progress bar earns its keep. The
+        reader can see that the end is close, so they stay for the conclusion instead of
+        abandoning the page in the middle of it.</p>
+      <p>When the bar is full, the article is over. That is the whole contract.</p>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <p>End of the article — the bar above should be full.</p>
+  </footer>
+
+</body>
+</html>

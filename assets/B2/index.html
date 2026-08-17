@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>B2 — Turntable</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <main class="player">
+    <h1>Popular song of the week</h1>
+
+    <div class="turntable">
+      <img class="base" src="images/turntable.PNG" alt="Record player">
+      <img class="wheel" src="images/circle.svg" alt="Record">
+      <img class="tone-arm" src="images/armTone.svg" alt="Tone arm">
+    </div>
+
+    <div class="controls">
+      <button id="off" type="button">Off</button>
+      <button id="next" type="button">&gt;&gt;</button>
+      <label for="volume">Volume</label>
+      <input id="volume" type="range" min="0" max="1" step="0.01" value="0.5">
+    </div>
+
+    <p class="hint">Press the record to start the music.</p>
+  </main>
+
+  <script src="js/audio.js"></script>
+</body>
+</html>
