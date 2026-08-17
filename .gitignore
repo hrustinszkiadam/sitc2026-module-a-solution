@@ -1,2 +1,4 @@
 # .env is committed on purpose — see the comment at the top of that file.
 node_modules
+# Request logs written by C2 at runtime
+C2/log/*.txt

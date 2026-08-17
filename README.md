@@ -1,80 +1,59 @@
-# Vanilla — WSC2026
+# Module A — Mini Test Projects
 
-A starting point for competitors who want to build **without a framework**, in plain PHP,
-plain JavaScript, or both (WorldSkills 2026 Web Technologies, TP17).
+Eight self-contained mini test projects: three design implementation tasks (HTML and CSS
+only), three front-end tasks (HTML, CSS and JavaScript) and two back-end tasks (PHP).
 
-Two entry points, one small task-list app, so you can see each stack working before you
-delete the demo and write your own:
+Open `index.html` for the overview page that links to every mini test project.
 
-- **`index.php`** — rendered on the server. No JavaScript involved.
-- **`index.html` + `scripts.js`** — rendered in the browser, fetching `api/tasks.php`.
+## Structure
 
-Both read the same MySQL database through **`config/db.php`**.
-
-## Run it
-
-```bash
-# edit .env with your credentials first
-docker compose up --build
+```text
+/
+├── index.html      overview page with a thumbnail and a title for every mini project
+├── thumbnails/     the images used by the overview page
+├── assets/         the media files and starter code as they were provided
+├── A1/             Floating Label                 (L1, HTML + CSS)
+├── A2/             Progress Animation             (L1, HTML + CSS)
+├── A3/             3D Can Rotation Effect         (L2, HTML + CSS)
+├── B1/             World's Tallest Buildings      (L1, HTML + CSS + JS)
+├── B2/             Turntable                      (L3, HTML + CSS + JS)
+├── B3/             Lines and Dots Animation       (L1, HTML + CSS + JS)
+├── C1/             Registration Form Validation   (L1, PHP)
+└── C2/             API Request Logger             (L2, PHP)
 ```
 
-- **http://localhost** → the PHP page
-- **http://localhost/index.html** → the JavaScript page
+`assets/` holds the provided material only (reference videos, images, audio and the
+starter HTML/CSS files). The solutions are in the folders named after the mini project,
+each one with its own copy of the media it needs.
 
-Stop with `docker compose down`.
+## Running
 
-## How to use it
+The six front-end mini projects are static, open their `index.html` in Google Chrome.
 
-1. Building with plain PHP? Start from **`index.php`**.
-2. Building with plain JavaScript? Start from **`index.html`** and **`scripts.js`**.
-3. Either way, put database configuration in **`config/db.php`**.
+The two back-end mini projects run on the PHP built-in web server, started from the folder
+of the mini project:
 
-Delete whichever half you don't need. There is no build step, no package manager, and no
-dependencies — edit a file, reload the page.
+```shell
+cd C1        # or C2
+php -S localhost:8080
+```
 
-## Files
+- **C1** → <http://localhost:8080/index.php> — the form is validated in PHP.
+- **C2** → `POST http://localhost:8080/log.php` with `Content-Type: application/json`;
+  the requests are written to `C2/log/HH-MM-SS-request.txt`. <http://localhost:8080/> is a
+  small test page that sends such a request.
 
-| File | What it is |
-|------|------------|
-| `index.php` | Vanilla PHP entry point — server-rendered page |
-| `index.html` | Vanilla JavaScript entry point — static markup |
-| `scripts.js` | Fetches and renders the task list, handles the add form |
-| `api/tasks.php` | JSON API: `GET` lists tasks, `POST` adds one |
-| `config/db.php` | PDO connection + schema/seed helpers |
-| `styles.css` | Shared styling for both pages |
-| `.env` | Your MySQL credentials — edit this before running |
+Both folders contain a `README.txt` with the exact URL and examples.
 
-## Database
+To browse everything from one server instead, start it in the repository root
+(`php -S localhost:8080`) and open <http://localhost:8080/>.
 
-**MySQL**, hosted at `db.sitc.skillsit.eu:3306`. Each competitor has their own username,
-password and database. Edit **`.env`** at the project root:
+## Notes on the implementations
 
-| Variable | Value |
-|----------|-------|
-| `DB_HOST` | `db.sitc.skillsit.eu` |
-| `DB_PORT` | `3306` |
-| `DB_USER` | your username, e.g. `c42` |
-| `DB_PASS` | your password |
-| `DB_NAME` | your database, e.g. `c42_module-a` |
-
-`config/db.php` loads `.env` and opens the PDO connection. The schema is created and
-seeded on container start by `docker-entrypoint.sh`; if the server is unreachable, Apache
-still starts and the pages show the connection error.
-
-**`.env` is committed on purpose.** The competition runs offline and the CI pipelines
-deploy the bare image to Kubernetes/pulldeck without setting any environment variables, so
-the credentials have to travel with the code. Two consequences worth knowing:
-
-- The Dockerfile moves `.env` to `/var/www/.env`, **outside the document root**, and Apache
-  denies all dotfiles — so `http://your-host/.env` returns 403, not your password.
-- A real environment variable still overrides the file, so compose or a k8s manifest can
-  change any value without a rebuild.
-
-> The database name contains a **hyphen**, so it must be wrapped in backticks anywhere it
-> appears in raw SQL (`` USE `c42_module-a` ``). It does *not* need quoting in the DSN.
-
-## Stack
-
-- PHP 8.3 (Apache, `pdo_mysql`)
-- MySQL (remote, competition-provided)
-- No framework, no build step, no dependencies
+- **A2** uses a CSS scroll timeline (`animation-timeline: scroll(root block)`), so the bar
+  follows the scroll position without any JavaScript.
+- **A3** repeats the label image along the can and scrolls it by exactly one tile per turn,
+  which is what makes the can look as if it were rotating.
+- **B1** sorts the data by height, then sets only the height of each image so the aspect
+  ratio is kept; the tallest building is 800px.
+- **B2** keeps the audio in one `Audio` object and switches its `src` for the next track.

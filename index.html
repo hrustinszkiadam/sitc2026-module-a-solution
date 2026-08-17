@@ -1,29 +1,222 @@
 <!doctype html>
-<!-- Vanilla JavaScript entry point — start here for a JS project.
-     The markup below is static; scripts.js fills in the task list at runtime. -->
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>WSC2026 · Vanilla JavaScript</title>
-  <link rel="stylesheet" href="styles.css">
+  <title>Module A — Mini Test Projects</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 56px 24px 80px;
+      font-family: "Segoe UI", system-ui, sans-serif;
+      color: #1d2532;
+      background: #f2f4f8;
+    }
+
+    header {
+      max-width: 1100px;
+      margin: 0 auto 40px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 30px;
+      letter-spacing: -0.5px;
+    }
+
+    header p {
+      margin: 0;
+      color: #66718a;
+    }
+
+    h2 {
+      max-width: 1100px;
+      margin: 44px auto 16px;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #66718a;
+    }
+
+    .grid {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 22px;
+    }
+
+    .card {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 6px 18px rgba(29, 37, 50, 0.08);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 26px rgba(29, 37, 50, 0.16);
+    }
+
+    .card img {
+      display: block;
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      object-position: center;
+      background: #dde2ec;
+    }
+
+    .card__body {
+      padding: 16px 18px 18px;
+    }
+
+    .card__id {
+      display: inline-block;
+      padding: 2px 8px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: #fff;
+      background: #3f6fe0;
+      border-radius: 4px;
+    }
+
+    .card__level {
+      float: right;
+      font-size: 12px;
+      font-weight: 600;
+      color: #8a94a8;
+    }
+
+    .card__title {
+      margin: 10px 0 4px;
+      font-size: 17px;
+      font-weight: 600;
+    }
+
+    .card__note {
+      margin: 0;
+      font-size: 13px;
+      color: #66718a;
+    }
+
+    footer {
+      max-width: 1100px;
+      margin: 48px auto 0;
+      font-size: 13px;
+      color: #8a94a8;
+    }
+
+    code {
+      padding: 1px 5px;
+      background: #e3e7f0;
+      border-radius: 4px;
+    }
+  </style>
 </head>
 <body>
-  <main class="card">
-    <h1>Vanilla <span class="v">JavaScript</span></h1>
-    <p>WSC2026 Web Technologies — no framework, no build step. This list is fetched by
-      <code>scripts.js</code> from <code>api/tasks.php</code>.</p>
 
-    <ul id="tasks"><li>Loading…</li></ul>
+  <header>
+    <h1>Module A — Mini Test Projects</h1>
+    <p>Static website design, front-end development and back-end development.</p>
+  </header>
 
-    <form id="add-task">
-      <input id="title" type="text" placeholder="Add a task…" required>
-      <button type="submit">Add</button>
-    </form>
+  <h2>Design implementation</h2>
+  <div class="grid">
+    <a class="card" href="A1/index.html">
+      <img src="thumbnails/A1.png" alt="A1 — Floating Label">
+      <div class="card__body">
+        <span class="card__id">A1</span><span class="card__level">Level 1</span>
+        <p class="card__title">Floating Label</p>
+        <p class="card__note">Label that floats to the top edge of the input, CSS only.</p>
+      </div>
+    </a>
 
-    <p class="alt">Building with plain PHP instead? → <a href="index.php">index.php</a></p>
-  </main>
+    <a class="card" href="A2/index.html">
+      <img src="thumbnails/A2.png" alt="A2 — Progress Animation">
+      <div class="card__body">
+        <span class="card__id">A2</span><span class="card__level">Level 1</span>
+        <p class="card__title">Progress Animation</p>
+        <p class="card__note">Reading progress bar driven by the scroll position, CSS only.</p>
+      </div>
+    </a>
 
-  <script src="scripts.js"></script>
+    <a class="card" href="A3/index.html">
+      <img src="thumbnails/A3.png" alt="A3 — 3D Can Rotation Effect">
+      <div class="card__body">
+        <span class="card__id">A3</span><span class="card__level">Level 2</span>
+        <p class="card__title">3D Can Rotation Effect</p>
+        <p class="card__note">Wrapped drink can that spins and scales on hover, CSS only.</p>
+      </div>
+    </a>
+  </div>
+
+  <h2>Front-end development</h2>
+  <div class="grid">
+    <a class="card" href="B1/index.html">
+      <img src="thumbnails/B1.png" alt="B1 — World's Tallest Buildings">
+      <div class="card__body">
+        <span class="card__id">B1</span><span class="card__level">Level 1</span>
+        <p class="card__title">World's Tallest Buildings</p>
+        <p class="card__note">Skyline rendered from data, scaled to the tallest tower.</p>
+      </div>
+    </a>
+
+    <a class="card" href="B2/index.html">
+      <img src="thumbnails/B2.png" alt="B2 — Turntable">
+      <div class="card__body">
+        <span class="card__id">B2</span><span class="card__level">Level 3</span>
+        <p class="card__title">Turntable</p>
+        <p class="card__note">Record player with play, volume, next track and stop.</p>
+      </div>
+    </a>
+
+    <a class="card" href="B3/index.html">
+      <img src="thumbnails/B3.png" alt="B3 — Lines and Dots Animation">
+      <div class="card__body">
+        <span class="card__id">B3</span><span class="card__level">Level 1</span>
+        <p class="card__title">Lines and Dots Animation</p>
+        <p class="card__note">40 random dots connected to the cursor with lines.</p>
+      </div>
+    </a>
+  </div>
+
+  <h2>Back-end development</h2>
+  <div class="grid">
+    <a class="card" href="C1/index.php">
+      <img src="thumbnails/C1.png" alt="C1 — Registration Form Validation">
+      <div class="card__body">
+        <span class="card__id">C1</span><span class="card__level">Level 1</span>
+        <p class="card__title">Registration Form Validation</p>
+        <p class="card__note">Form validated in PHP, needs a PHP server.</p>
+      </div>
+    </a>
+
+    <a class="card" href="C2/index.html">
+      <img src="thumbnails/C2.png" alt="C2 — API Request Logger">
+      <div class="card__body">
+        <span class="card__id">C2</span><span class="card__level">Level 2</span>
+        <p class="card__title">API Request Logger</p>
+        <p class="card__note">POST endpoint that logs every JSON request, needs a PHP server.</p>
+      </div>
+    </a>
+  </div>
+
+  <footer>
+    <p>The back-end mini test projects run with the PHP built-in server started from their
+      own folder: <code>php -S localhost:8080</code>. Each of them has a README.txt with the
+      URL to call.</p>
+  </footer>
+
 </body>
 </html>
