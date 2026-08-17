@@ -39,8 +39,8 @@ php -S localhost:8080
 ```
 
 - **C1** → <http://localhost:8080/index.php> — the form is validated in PHP.
-- **C2** → `POST http://localhost:8080/log.php` with `Content-Type: application/json`;
-  the requests are written to `C2/log/HH-MM-SS-request.txt`. <http://localhost:8080/> is a
+- **C2** → `POST http://localhost:8080/api/log` with `Content-Type: application/json`; the
+  requests are written to `C2/log/HH-MM-SS-request.txt`. <http://localhost:8080/> is a
   small test page that sends such a request.
 
 Both folders contain a `README.txt` with the exact URL and examples.
@@ -57,3 +57,7 @@ To browse everything from one server instead, start it in the repository root
 - **B1** sorts the data by height, then sets only the height of each image so the aspect
   ratio is kept; the tallest building is 800px.
 - **B2** keeps the audio in one `Audio` object and switches its `src` for the next track.
+- **C2** is served by a single `index.php`. The PHP built-in server hands it every URL
+  that is not a real file, so the endpoint is `/api/log` without a `.php` extension and
+  without a router script; it answers on `/C2/api/log` too when the server runs in the
+  root.

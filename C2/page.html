@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>C2 — API Request Logger</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       min-height: 100vh;
@@ -80,7 +84,7 @@
 
   <main class="panel">
     <h1>API Request Logger</h1>
-    <p>Endpoint: <code>POST http://localhost:8080/log.php</code> with
+    <p>Endpoint: <code id="endpoint">POST /api/log</code> with
       <code>Content-Type: application/json</code>. Every call is written to
       <code>log/HH-MM-SS-request.txt</code>.</p>
 
@@ -91,10 +95,15 @@
   </main>
 
   <script>
+    // Works whether the server was started in this folder (/api/log) or in the
+    // repository root (/C2/api/log).
+    const endpoint = location.pathname.replace(/\/$/, "") + "/api/log";
+    document.getElementById("endpoint").textContent = "POST " + endpoint;
+
     document.getElementById("send").addEventListener("click", async function () {
       const result = document.getElementById("result");
 
-      const response = await fetch("log.php", {
+      const response = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: document.getElementById("payload").value
