@@ -1,0 +1,98 @@
+/* A3 — 3D Can Rotation Effect. CSS only, no JavaScript.
+   The label is a horizontally repeating background image. Scrolling that background
+   by exactly one tile while the can tilts and scales makes the can look as if it
+   were spinning around its own axis. */
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(at 50%, #081718 -20%, #28aeb4 90%);
+}
+
+.stage {
+  perspective: 1200px;
+}
+
+.can {
+  position: relative;
+  width: 240px;
+  transform-style: preserve-3d;
+  transition: transform 0.6s ease;
+  filter: drop-shadow(0 30px 30px rgba(3, 20, 21, 0.55));
+  cursor: pointer;
+}
+
+.can__body {
+  display: block;
+  width: 100%;
+}
+
+/* The label sits on the straight part of the can. */
+.can__label,
+.can__gloss {
+  position: absolute;
+  left: 2%;
+  right: 2%;
+  top: 17%;
+  bottom: 12%;
+  border-radius: 6px / 14px;
+}
+
+.can__label {
+  background-image: url("wrapper.png");
+  background-size: 320px 100%;
+  background-repeat: repeat-x;
+  background-position-x: 0;
+}
+
+/* Shading on top of the label: dark at both edges, bright where the cylinder
+   catches the light, so the flat artwork reads as wrapped around the can. */
+.can__gloss {
+  background:
+    linear-gradient(90deg,
+      rgba(3, 20, 21, 0.65) 0%,
+      rgba(3, 20, 21, 0.25) 12%,
+      rgba(255, 255, 255, 0.32) 30%,
+      rgba(255, 255, 255, 0.05) 46%,
+      rgba(3, 20, 21, 0.18) 68%,
+      rgba(3, 20, 21, 0.72) 100%);
+  pointer-events: none;
+}
+
+/* --- hover: rotate and scale -------------------------------------------- */
+
+.can:hover {
+  animation: tilt 3s ease-in-out infinite;
+}
+
+.can:hover .can__label {
+  animation: spin 3s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    background-position-x: 0;
+  }
+
+  to {
+    /* one full tile of the wrapper = one full turn of the can */
+    background-position-x: -320px;
+  }
+}
+
+@keyframes tilt {
+  0% {
+    transform: scale(1.12) rotateY(-9deg) rotateZ(-1.5deg);
+  }
+
+  50% {
+    transform: scale(1.12) rotateY(9deg) rotateZ(1.5deg);
+  }
+
+  100% {
+    transform: scale(1.12) rotateY(-9deg) rotateZ(-1.5deg);
+  }
+}
