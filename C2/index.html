@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>C2 — API Request Logger</title>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: "Segoe UI", system-ui, sans-serif;
+      background: #10141c;
+      color: #dbe2ee;
+    }
+
+    .panel {
+      width: 560px;
+      max-width: 92vw;
+      padding: 32px;
+      background: #19202c;
+      border: 1px solid #2b3444;
+      border-radius: 12px;
+    }
+
+    h1 {
+      margin: 0 0 6px;
+      font-size: 20px;
+    }
+
+    p {
+      margin: 0 0 18px;
+      color: #93a0b5;
+      font-size: 14px;
+    }
+
+    code {
+      color: #7fd6c1;
+    }
+
+    textarea {
+      width: 100%;
+      height: 130px;
+      padding: 12px;
+      font-family: Consolas, monospace;
+      font-size: 13px;
+      color: #dbe2ee;
+      background: #101722;
+      border: 1px solid #2b3444;
+      border-radius: 8px;
+      resize: vertical;
+    }
+
+    button {
+      margin-top: 12px;
+      padding: 10px 18px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #10141c;
+      background: #7fd6c1;
+      border: 0;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    pre {
+      margin: 16px 0 0;
+      padding: 12px;
+      font-size: 13px;
+      color: #b7c4d8;
+      background: #101722;
+      border-radius: 8px;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+
+  <main class="panel">
+    <h1>API Request Logger</h1>
+    <p>Endpoint: <code>POST http://localhost:8080/log.php</code> with
+      <code>Content-Type: application/json</code>. Every call is written to
+      <code>log/HH-MM-SS-request.txt</code>.</p>
+
+    <textarea id="payload">{ "name": "Ada", "score": 42 }</textarea>
+    <button id="send" type="button">Send test request</button>
+
+    <pre id="result">No request sent yet.</pre>
+  </main>
+
+  <script>
+    document.getElementById("send").addEventListener("click", async function () {
+      const result = document.getElementById("result");
+
+      const response = await fetch("log.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: document.getElementById("payload").value
+      });
+
+      result.textContent = response.status + " " + response.statusText + "\n" +
+        (await response.text());
+    });
+  </script>
+</body>
+</html>
